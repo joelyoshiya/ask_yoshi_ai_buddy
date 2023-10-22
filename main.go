@@ -40,11 +40,36 @@ func main() {
 	// Define API endpoint URL and authentication key
 	apiURL := "https://api.openai.com/v1/chat/completions"
 
+	// prompt user to choose a mode at start of cli tool
+	fmt.Println("Choose a model:")
+	fmt.Println("1. GPT-4")
+	fmt.Println("2. GPT-3.5 Turbo")
+	fmt.Print("Enter a number: ")
+
+	// get user input
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
+	userInput := scanner.Text()
+	// if user input is not 1 or 2, exit
+	if userInput != "1" && userInput != "2" {
+		fmt.Println("Error: invalid input")
+		return
+	}
+
 	// models
 	models := []string{
 		"gpt-4",
 		"gpt-3.5-turbo",
 	}
+
+	// set model based on user input
+	model := models[0]
+	if userInput == "2" {
+		model = models[1]
+	}
+
+	// Print model name
+	fmt.Printf("Using model: %s\n", model)
 
 	// Load environment variables from .env file
 	err := godotenv.Load()
@@ -63,7 +88,7 @@ func main() {
 	// Create function to send POST request to API
 	sendRequest := func(prompt string) (chatCompletionResponse, error) {
 		// Create request body
-		requestBody := strings.NewReader(fmt.Sprintf(`{"messages": [{"role": "user", "content": "%s"}], "model": "%s"}`, prompt, models[0]))
+		requestBody := strings.NewReader(fmt.Sprintf(`{"messages": [{"role": "user", "content": "%s"}], "model": "%s"}`, prompt, model))
 
 		// Create HTTP request
 		request, err := http.NewRequest("POST", apiURL, requestBody)
@@ -101,7 +126,6 @@ func main() {
 	}
 
 	// Create loop to continuously prompt user for input and send to API
-	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("You: ")
 		scanner.Scan()
