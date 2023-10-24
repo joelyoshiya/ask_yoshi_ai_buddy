@@ -145,17 +145,17 @@ func main() {
 
 	for {
 		// check for quit command
+		fmt.Print("You: ")
 		scanner.Scan()
+
+		// intercept user input if it is 'q' and exit
 		userInput := scanner.Text()
 		if userInput == "q" {
 			fmt.Println("Bye!")
 			return
 		}
 
-		fmt.Print("You: ")
-		scanner.Scan()
-		userInput = scanner.Text()
-
+		// send user input to API
 		response, err := sendRequest(userInput)
 		if err != nil {
 			fmt.Println("Error:", err)

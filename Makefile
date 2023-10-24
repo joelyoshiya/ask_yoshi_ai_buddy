@@ -1,2 +1,2 @@
 all:
-	go build -o build/askYosh main.go
+	go build -o build/askYoshi main.go
