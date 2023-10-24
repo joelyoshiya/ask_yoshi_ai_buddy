@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -141,6 +142,7 @@ func main() {
 	// Create loop to continuously prompt user for input and send to API
 
 	// print a friendly AIBuddy message with cute text emoji at end
+	printYoshiImageCLI()
 	fmt.Println("Hi I'm Yosh! 🦖👋. Type 'q' to exit.")
 
 	for {
@@ -167,5 +169,22 @@ func main() {
 		for _, choice := range response.Choices {
 			fmt.Printf("AI: %s\n", choice.Message.Content)
 		}
+	}
+}
+
+func printYoshiImageCLI() {
+	file, err := os.Open("yoshiAscii.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
+	}
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
 	}
 }
