@@ -1,5 +1,5 @@
 # Ask Yoshi
-Yoshi is a themed chatbot that works with OpenAI's chat completion API. It is designed to be a fun and easy way to interact with an otherwise vanilla chat interface.
+Yoshi is a themed CLI chatbot that works with OpenAI's chat completion API. It is designed to be a fun and easy way to interact with an otherwise vanilla chat interface.
 
 # TODO
 - [ ] Utliize chat streaming API for more responsive chat
@@ -44,3 +44,7 @@ Yoshi is a themed chatbot that works with OpenAI's chat completion API. It is de
 @@@@@@@@@@@@@@@@@@@@@@@@&5????7777?G@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@&5YJJJYPB@@@@@@@@@@@@@@@@
 ```
+
+## Inspiration
+
+There is a chatbot in the Netflix Series (Somebody)[https://en.wikipedia.org/wiki/Somebody_(TV_series)] that I thought was both nostalgic and amusing-and also slightly creepy. Kind of trying to emulate that.
