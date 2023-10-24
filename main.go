@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/joho/godotenv"
 )
@@ -102,6 +103,18 @@ func main() {
 
 		// Send request
 		client := &http.Client{}
+		loading := make(chan bool, 1)
+		go func() {
+			for {
+				select {
+				case <-loading:
+					return
+				default:
+					fmt.Print(".")
+					time.Sleep(500 * time.Millisecond)
+				}
+			}
+		}()
 		response, err := client.Do(request)
 		if err != nil {
 			return chatCompletionResponse{}, err
@@ -110,6 +123,7 @@ func main() {
 
 		// Read response body
 		responseBody, err := io.ReadAll(response.Body)
+		loading <- true
 		if err != nil {
 			return chatCompletionResponse{}, err
 		}
@@ -124,12 +138,23 @@ func main() {
 		// Return the first choice
 		return r, nil
 	}
-
 	// Create loop to continuously prompt user for input and send to API
+
+	// print a friendly AIBuddy message with cute text emoji at end
+	fmt.Println("Hi I'm Yosh! 🦖👋. Type 'q' to exit.")
+
 	for {
-		fmt.Print("You: ")
+		// check for quit command
 		scanner.Scan()
 		userInput := scanner.Text()
+		if userInput == "q" {
+			fmt.Println("Bye!")
+			return
+		}
+
+		fmt.Print("You: ")
+		scanner.Scan()
+		userInput = scanner.Text()
 
 		response, err := sendRequest(userInput)
 		if err != nil {
@@ -138,6 +163,7 @@ func main() {
 		}
 
 		// for each choice in response, print the message
+		fmt.Println()
 		for _, choice := range response.Choices {
 			fmt.Printf("AI: %s\n", choice.Message.Content)
 		}
